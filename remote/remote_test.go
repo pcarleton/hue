@@ -18,14 +18,21 @@ func GotButExpected(msg string, got,expected interface{}, t *testing.T) {
   t.Errorf("%v Got: %v, but expected %v", msg, got, expected)
 }
 
-func Test_GetHueIp(t *testing.T) {
-  expectedIp := "10.0.1.2"
-  ip := GetHueIp()
-  if (ip != expectedIp) {
-    GotButExpected("Local hue IP", ip, expectedIp, t)
-  }
+
+func Test_GetStatus(t *testing.T) {
+  GetStatusMsg()
+  
+
 }
 
+//func Test_GetHueIp(t *testing.T) {
+//  expectedIp := "10.0.1.2"
+//  ip := GetHueIp()
+//  if (ip != expectedIp) {
+//    GotButExpected("Local hue IP", ip, expectedIp, t)
+//  }
+//}
+//
 func Test_ConvertJsonToMap_GoodInput(t *testing.T) {
   jsonMap, ok := ConvertJsonToMap(strings.NewReader(hue_input))
   if !ok {

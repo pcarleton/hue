@@ -65,17 +65,17 @@ func GetStatusMsg() string {
   if err != nil {
     fmt.Println("Error: %v", err)
   }
-  fmt.Println("%v", resp)
+  fmt.Print("%v\n", resp)
   dec := json.NewDecoder(resp.Body)
   var m StatusMessage
   err = dec.Decode(&m)
   if err != nil {
-    fmt.Println("Error: %v", err)
+    fmt.Printf("Error: %v\n", err)
   }
   fmt.Printf("%v\n", m.Lights["1"])
-  resp, err = DoPut("http://10.0.1.4/api/lights/1/state", "{ \"on\":false }")
+  //resp, err = DoPut("http://10.0.1.4/api/lights/1/state", "{ \"on\":false }")
   if err != nil {
-    fmt.Println("Error: %v", err)
+    fmt.Printf("Error: %v\n", err)
   }
   fmt.Println(resp)
   return "success"
