@@ -18,11 +18,18 @@ func GotButExpected(msg string, got,expected interface{}, t *testing.T) {
   t.Errorf("%v Got: %v, but expected %v", msg, got, expected)
 }
 
+func Test_PutStatus(t *testing.T) {
+  //DoPut("http://10.0.1.2/api/newdeveloper/lights/1/state", "{ \"on\": true}")
+  //ToggleLight(1)
+  //LightLoop(8)
+  //AllOn()
+  //DoStep(0, 65000, 10000, GroupSet(SetHue))
+  Show()
+  
+}
 
 func Test_GetStatus(t *testing.T) {
-  GetStatusMsg()
-  
-
+  //GetStatusMsg()
 }
 
 //func Test_GetHueIp(t *testing.T) {
