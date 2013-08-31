@@ -8,11 +8,12 @@ import  (
   "net/http"
   "encoding/json"
   "io"
+  "github.com/pcarleton/hue/color"
 )
 
 const meethue = "http://www.meethue.com/api/nupnp"
 const developer_name = "newdeveloper"
-const hue_ip = "10.0.1.2"
+const hue_ip = "10.0.1.119"
 
 type StatusMessage struct {
   Config map[string] interface{}
@@ -32,6 +33,14 @@ type LightState struct {
   Effect string `json:"effect,omitempty"`
   Colormode string `json:"colormode,omitempty"`
   Reachable bool `json:"reachable,omitempty"`
+}
+
+func (l LightState) GetHSB() color.HSB {
+  return color.HSB{ H:float64(360*l.Hue)/65535, S:float64(l.Sat)/255, B:float64(l.Bri)/255}
+}
+
+func (l LightState) GetRGB() color.RGB {
+  return color.HSBtoRGB(l.GetHSB())
 }
 
 type LightAction struct {
@@ -259,8 +268,8 @@ func GetLightStatus(lightnum int) LightState {
   return m.State
 }
 
-func GetStatusMsg() string {
-  resp, err := http.Get(hue_ip + "/api/" + developer_name)
+func GetStatusMsg() StatusMessage {
+  resp, err := http.Get("http://" + hue_ip + "/api/" + developer_name)
   if err != nil {
     fmt.Printf("Error: %v\n", err)
   }
@@ -277,8 +286,7 @@ func GetStatusMsg() string {
   if err != nil {
     fmt.Printf("Error: %v\n", err)
   }
-  fmt.Println(resp)
-  return "success"
+  return m
 }
 
 func GetStatus() (string, error){

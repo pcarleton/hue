@@ -12,31 +12,31 @@ type TestCase struct {
 
 var test_cases = []TestCase{
   TestCase{ name: "yellow",
-            rgb: RGB{r:255, g:255, b:0},
-            hsb: HSB{h:60, s:1, b:1},
+            rgb: RGB{R:255, G:255, B:0},
+            hsb: HSB{H:60, S:1, B:1},
           },
   TestCase{ name: "white",
-            rgb: RGB{r:255, g:255, b:255},
-            hsb: HSB{h:0, s:0, b:1},
+            rgb: RGB{R:255, G:255, B:255},
+            hsb: HSB{H:0, S:0, B:1},
           },
   TestCase{ name: "purple",
-            rgb: RGB{r:170, g:0, b:255},
-            hsb: HSB{h:280, s:1, b:1},
+            rgb: RGB{R:170, G:0, B:255},
+            hsb: HSB{H:280, S:1, B:1},
           },
   TestCase{ name: "navy",
-            rgb: RGB{r:25, g:25, b:112},
-            hsb: HSB{h:240, s:0.78, b:0.44},
+            rgb: RGB{R:25, G:25, B:112},
+            hsb: HSB{H:240, S:0.78, B:0.44},
           },
   TestCase{ name: "black",
-            rgb: RGB{r:0, g:0, b:0},
-            hsb: HSB{h:0, s:0, b:0},
+            rgb: RGB{R:0, G:0, B:0},
+            hsb: HSB{H:0, S:0, B:0},
           },
 }
 
 func roundHSB(hsb HSB) HSB {
-  hsb.h = float64(int(hsb.h + 0.5))
-  hsb.s = float64(int(100*hsb.s + 0.5))/100
-  hsb.b = float64(int(100*hsb.b + 0.5))/100
+  hsb.H = float64(int(hsb.H + 0.5))
+  hsb.S = float64(int(100*hsb.S + 0.5))/100
+  hsb.B = float64(int(100*hsb.B + 0.5))/100
   return hsb
 }
 
@@ -49,9 +49,9 @@ func difference(a, b int) int {
 }
 
 func withinOne(a, b RGB) bool {
-  return difference(a.r, b.r) <= 1 &&
-  difference(a.g, b.g) <= 1 &&
-  difference(a.b, b.b) <= 1
+  return difference(a.R, b.R) <= 1 &&
+  difference(a.G, b.G) <= 1 &&
+  difference(a.B, b.B) <= 1
 }
 
 func GotButExpected(msg string, got,expected interface{}, t *testing.T) {
@@ -60,7 +60,7 @@ func GotButExpected(msg string, got,expected interface{}, t *testing.T) {
 
 
 func Test_RGBtoHex(t *testing.T) {
-  foo := RGB{ r:123, g:55, b:255}
+  foo := RGB{ R:123, G:55, B:255}
   hex := "#7b37ff"
   if foo.Hex() != hex {
     GotButExpected("Hex", foo.Hex(), hex, t)

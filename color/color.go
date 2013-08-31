@@ -6,46 +6,46 @@ import (
 )
 
 type RGB struct {
-  r, g, b int
+  R, G, B int
 }
 
 type HSB struct {
-  h, s, b float64
+  H, S, B float64
 }
 
 
-func (rgb *RGB) Hex() string {
-  return fmt.Sprintf("#%x%x%x", rgb.r, rgb.g, rgb.b)
+func (rgb RGB) Hex() string {
+  return fmt.Sprintf("#%02X%02X%02X", rgb.R, rgb.G, rgb.B)
 
 }
 
 func RGBtoHSB(rgb RGB) HSB {
-  r := float64(rgb.r)/255.0
-  g := float64(rgb.g)/255.0
-  b := float64(rgb.b)/255.0
+  r := float64(rgb.R)/255.0
+  g := float64(rgb.G)/255.0
+  b := float64(rgb.B)/255.0
   var min = math.Min(r, math.Min(g, b))
   var max = math.Max(r, math.Max(g, b))
 
   var delta = max - min
 
-  hsb := HSB{ b: max }
+  hsb := HSB{ B: max }
   if max != 0 {
-    hsb.s = delta/max
+    hsb.S = delta/max
   }
-  if hsb.s <= 0 {
-    hsb.h = 0
+  if hsb.S <= 0 {
+    hsb.H = 0
   } else {
     if r == max {
-      hsb.h = (g - b) / delta
+      hsb.H = (g - b) / delta
       if (g < b) {
-        hsb.h += 6
+        hsb.H += 6
       }
     } else if g == max {
-      hsb.h = 2 + (b - r) / delta
+      hsb.H = 2 + (b - r) / delta
     } else if b == max {
-      hsb.h = 4 + (r - g) / delta
+      hsb.H = 4 + (r - g) / delta
     }
-    hsb.h *= 60
+    hsb.H *= 60
 
   }
 
@@ -53,12 +53,16 @@ func RGBtoHSB(rgb RGB) HSB {
 }
 
 func HSBtoRGB(hsb HSB) RGB {
-  c := hsb.b * hsb.s
-  h := hsb.h/60
+  c := hsb.B * hsb.S
+  h := hsb.H/60
 
-
-
-  x := c*(1 - math.Abs(math.Remainder(h, 2) - 1))
+  x := c*(1 - math.Abs(math.Abs(math.Remainder(h, 2)) - 1))
+  if x < 0 {
+    fmt.Println("X is negative!!")
+    fmt.Println(x)
+    fmt.Println(math.Remainder(h, 2))
+    fmt.Println(math.Abs(math.Remainder(h, 2) -1))
+  }
 
   var r, g, b float64
   switch int(h) {
@@ -69,19 +73,19 @@ func HSBtoRGB(hsb HSB) RGB {
     case 4: r = x; g = 0; b = c
     case 5: r = c; g = 0; b = x
   }
-  m := hsb.b - c
+  m := hsb.B - c
   r += m
   g += m
   b += m
-  return RGB{ r:int(255*r), g:int(255*g), b:int(255*b)}
+  return RGB{ R:int(255*r), G:int(255*g), B:int(255*b)}
 
 //
 //  i := int(math.Floor(h *6))
 //  f := h*6 - float64(i)
-//  p := int(255*hsb.b * (1 - hsb.s))
-//  q := int(255*hsb.b * (1 - f*hsb.s))
-//  t := int(255*hsb.b * (1 - (1-f)*hsb.s))
-//  v := int(255*hsb.b)
+//  p := int(255*hsb.B * (1 - hsb.S))
+//  q := int(255*hsb.B * (1 - f*hsb.S))
+//  t := int(255*hsb.B * (1 - (1-f)*hsb.S))
+//  v := int(255*hsb.B)
 //
 //  switch i % 6 {
 //    case 0: rgb = RGB{ r:v, g:t, b:p}
